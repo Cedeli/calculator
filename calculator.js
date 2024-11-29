@@ -58,8 +58,10 @@ buttons.forEach((button) => {
 
     if (button.classList.contains('equals')) {
         button.addEventListener('click', () => {
+            if (!input.value || !previousNum) return;
             let ans = operate(Number(previousNum), Number(input.value), operation);
             input.value = ans;
+            previousNum = NaN;
         })
     }
 });
