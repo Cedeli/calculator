@@ -90,4 +90,10 @@ buttons.forEach((button) => {
             previousNum = NaN;
         });
     }
+
+    if (button.classList.contains('negate')) {
+        button.addEventListener('click', () => {
+            input.value *= -1;
+        });
+    }
 });
