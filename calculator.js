@@ -3,8 +3,9 @@ const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('.button');
 const input = display.querySelector('input');
 
-let operation = '+';
+input.value = 0;
 let previousNum = 0;
+let operation = '+';
 
 function add(a, b) {
     return a + b;
@@ -44,6 +45,7 @@ function operate(a, b, operator) {
 buttons.forEach((button) => {
     if (button.classList.contains('number') || button.classList.contains('decimal')) {
         button.addEventListener('click', () => {
+            if (input.value == 0) input.value = '';
             input.value += button.textContent;
         });
     }
