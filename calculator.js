@@ -23,6 +23,10 @@ function divide(a, b) {
     return Math.round(a / b * 100) / 100;
 }
 
+function modulo(a, b) {
+    return a % b;
+}
+
 function operate(a, b, operator) {
     switch (operator) {
         case '+':
@@ -37,6 +41,9 @@ function operate(a, b, operator) {
         case '/':
             console.log(`${a} / ${b}`);
             return divide(a, b);
+        case '%':
+            console.log(`${a} % ${b}`);
+            return modulo(a, b);
         default:
             throw new Error('Invalid operator.');
     }
