@@ -74,4 +74,11 @@ buttons.forEach((button) => {
             input.value = Number(trimmedValue);
         });
     }
+
+    if (button.classList.contains('clear')) {
+        button.addEventListener('click', () => {
+            input.value = '';
+            previousNum = NaN;
+        });
+    }
 });
