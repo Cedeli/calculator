@@ -20,13 +20,21 @@ const keyMap = {
 
 let previousNum = null;
 let currentOperation = null;
+let displaySnarkyErrorMessage = false;
 
 function updateDisplay(value) {
     input.value = value;
+    if (value === 'Why?'){
+        displaySnarkyErrorMessage = true;
+    } else {
+        ddisplaySnarkyErrorMessage = false;
+    }
 }
 
 function handleNumberClick(num) {
-    if (input.value === '0') updateDisplay('');
+    if (input.value === '0' || displaySnarkyErrorMessage) {
+        updateDisplay('');
+    }
     updateDisplay(input.value + num);
 }
 
@@ -51,6 +59,12 @@ function handleEqualsClick() {
 function calculate() {
     const currentNum = Number(input.value);
     if (isNaN(currentNum)) return;
+
+    if (currentOperation === '/' && currentNum === 0) {
+        updateDisplay("Why?");
+        return;
+    }
+
     const result = operations[currentOperation](previousNum, currentNum);
     updateDisplay(result);
     previousNum = result;
