@@ -1,106 +1,93 @@
 const calculator = document.querySelector('.calculator');
 const display = document.querySelector('.display');
-const buttons = document.querySelectorAll('.button');
 const input = display.querySelector('input');
 
-input.value = 0;
-let previousNum = 0;
-let operation = '+';
+const operations = {
+    '+': (a, b) => a + b,
+    '-': (a, b) => a - b,
+    'x': (a, b) => a * b,
+    '/': (a, b) => Math.round((a / b) * 100) / 100,
+    '%': (a, b) => a % b,
+};
 
-function add(a, b) {
-    return a + b;
+let previousNum = null;
+let currentOperation = null;
+
+function updateDisplay(value) {
+    input.value = value;
 }
 
-function subtract(a, b) {
-    return a - b;
+function handleNumberClick(num) {
+    if (input.value === '0') updateDisplay('');
+    updateDisplay(input.value + num);
 }
 
-function multiply(a, b) {
-    return a * b;
+function handleOperatorClick(operator) {
+    if (previousNum === null) {
+        previousNum = Number(input.value);
+    } else {
+        calculate();
+    }
+    currentOperation = operator;
+    updateDisplay('');
 }
 
-function divide(a, b) {
-    return Math.round(a / b * 100) / 100;
+
+function handleEqualsClick() {
+    if (previousNum === null || currentOperation === null) return;
+    calculate();
+    currentOperation = null;
+    previousNum = null;
 }
 
-function modulo(a, b) {
-    return a % b;
+function calculate() {
+    const currentNum = Number(input.value);
+    if (isNaN(currentNum)) return;
+    const result = operations[currentOperation](previousNum, currentNum);
+    updateDisplay(result);
+    previousNum = result;
 }
 
-function operate(a, b, operator) {
-    switch (operator) {
-        case '+':
-            console.log(`${a} + ${b}`);
-            return add(a, b);
-        case '-':
-            console.log(`${a} - ${b}`);
-            return subtract(a, b);
-        case 'x':
-            console.log(`${a} * ${b}`);
-            return multiply(a, b);
-        case '/':
-            console.log(`${a} / ${b}`);
-            return divide(a, b);
-        case '%':
-            console.log(`${a} % ${b}`);
-            return modulo(a, b);
-        default:
-            throw new Error('Invalid operator.');
+
+function handleDecimalClick() {
+    if (!input.value.includes('.')) {
+        updateDisplay(input.value + '.');
     }
 }
 
-buttons.forEach((button) => {
-    if (button.classList.contains('number')) {
-        button.addEventListener('click', () => {
-            if (input.value === '0') input.value = '';
-            input.value += button.textContent;
-        });
-    }
+function handleDeleteClick() {
+    updateDisplay(input.value.slice(0, -1) || 0);
+}
 
-    if (button.classList.contains('decimal')) {
-        button.addEventListener('click', () => {
-            if (String(input.value).includes('.')) return;
-            input.value += button.textContent;
-        });
-    }
+function handleClearClick() {
+    updateDisplay(0);
+    previousNum = null;
+    currentOperation = null;
+}
 
-    if (button.classList.contains('operator')) {
-        button.addEventListener('click', () => {
-            operation = button.textContent;
-            previousNum = input.value;
-            input.value = '';
-        });
-    }
+function handleNegateClick() {
+    updateDisplay((Number(input.value) * -1).toString());
+}
 
-    if (button.classList.contains('equals')) {
-        button.addEventListener('click', () => {
-            if (!input.value || !previousNum) return;
-            let ans = operate(Number(previousNum), Number(input.value), operation);
-            input.value = ans;
-            previousNum = NaN;
-        });
-    }
+calculator.addEventListener('click', (event) => {
+    const button = event.target;
+    const buttonClassList = button.classList;
 
-    if (button.classList.contains('del')) {
-        button.addEventListener('click', () => {
-            let strValue = String(input.value);
-            if (strValue.length <= 0) return; 
-
-            let trimmedValue = strValue.substring(0, strValue.length - 1);
-            input.value = Number(trimmedValue);
-        });
-    }
-
-    if (button.classList.contains('clear')) {
-        button.addEventListener('click', () => {
-            input.value = 0;
-            previousNum = NaN;
-        });
-    }
-
-    if (button.classList.contains('negate')) {
-        button.addEventListener('click', () => {
-            input.value *= -1;
-        });
+    if (buttonClassList.contains('number')) {
+        handleNumberClick(button.textContent);
+    } else if (buttonClassList.contains('operator')) {
+        handleOperatorClick(button.textContent);
+    } else if (buttonClassList.contains('equals')) {
+        handleEqualsClick();
+    } else if (buttonClassList.contains('decimal')) {
+        handleDecimalClick();
+    } else if (buttonClassList.contains('del')) {
+        handleDeleteClick();
+    } else if (buttonClassList.contains('clear')) {
+        handleClearClick();
+    } else if (buttonClassList.contains('negate')) {
+        handleNegateClick();
     }
 });
+
+updateDisplay(0);
