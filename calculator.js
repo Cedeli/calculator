@@ -62,6 +62,16 @@ buttons.forEach((button) => {
             let ans = operate(Number(previousNum), Number(input.value), operation);
             input.value = ans;
             previousNum = NaN;
-        })
+        });
+    }
+
+    if (button.classList.contains('del')) {
+        button.addEventListener('click', () => {
+            let strValue = String(input.value);
+            if (strValue.length <= 0) return; 
+
+            let trimmedValue = strValue.substring(0, strValue.length - 1);
+            input.value = Number(trimmedValue);
+        });
     }
 });
