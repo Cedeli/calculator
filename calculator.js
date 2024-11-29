@@ -10,6 +10,14 @@ const operations = {
     '%': (a, b) => a % b,
 };
 
+const keyMap = {
+    '0': 'number', '1': 'number', '2': 'number', '3': 'number', '4': 'number',
+    '5': 'number', '6': 'number', '7': 'number', '8': 'number', '9': 'number',
+    '.': 'decimal', '+': 'operator', '-': 'operator', '*': 'operator', '/': 'operator',
+    '%': 'operator', '=': 'equals', 'Enter': 'equals', 'Backspace': 'del', 'Delete': 'del',
+    'Escape': 'clear', '_': 'negate'
+};
+
 let previousNum = null;
 let currentOperation = null;
 
@@ -87,6 +95,39 @@ calculator.addEventListener('click', (event) => {
         handleClearClick();
     } else if (buttonClassList.contains('negate')) {
         handleNegateClick();
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    const keyType = keyMap[key];
+
+    if (keyType) {
+        event.preventDefault();
+  
+        switch (keyType) {
+            case 'number':
+                handleNumberClick(key);
+                break;
+            case 'operator':
+                handleOperatorClick(key);
+                break;
+            case 'equals':
+                handleEqualsClick();
+                break;
+            case 'decimal':
+                handleDecimalClick();
+                break;
+            case 'del':
+                handleDeleteClick();
+                break;
+            case 'clear':
+                handleClearClick();
+                break;
+            case 'negate':
+                handleNegateClick();
+                break;
+        }
     }
 });
 
