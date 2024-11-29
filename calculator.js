@@ -7,7 +7,7 @@ const operations = {
     '-': (a, b) => a - b,
     'x': (a, b) => a * b,
     '/': (a, b) => Math.round((a / b) * 100) / 100,
-    '%': (a, b) => a % b,
+    '%': (a, b) => Math.round((a % b) * 100) / 100,
 };
 
 const keyMap = {
