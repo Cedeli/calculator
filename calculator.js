@@ -79,7 +79,7 @@ buttons.forEach((button) => {
 
     if (button.classList.contains('clear')) {
         button.addEventListener('click', () => {
-            input.value = '';
+            input.value = 0;
             previousNum = NaN;
         });
     }
