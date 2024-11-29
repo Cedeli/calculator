@@ -1,3 +1,8 @@
+const calculator = document.querySelector('.calculator');
+const display = document.querySelector('.display');
+const buttons = document.querySelectorAll('.button');
+const input = display.querySelector('input');
+
 function add(a, b) {
     return a + b;
 }
@@ -28,3 +33,11 @@ function operate(a, b, operator) {
             throw new Error('Invalid operator.');
     }
 }
+
+buttons.forEach((button) => {
+    if (button.classList.contains('number') || button.classList.contains('decimal')) {
+        button.addEventListener('click', () => {
+            input.value += button.textContent;
+        });
+    }
+});
