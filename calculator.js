@@ -43,9 +43,16 @@ function operate(a, b, operator) {
 }
 
 buttons.forEach((button) => {
-    if (button.classList.contains('number') || button.classList.contains('decimal')) {
+    if (button.classList.contains('number')) {
         button.addEventListener('click', () => {
-            if (input.value == 0) input.value = '';
+            if (input.value === '0') input.value = '';
+            input.value += button.textContent;
+        });
+    }
+
+    if (button.classList.contains('decimal')) {
+        button.addEventListener('click', () => {
+            if (String(input.value).includes('.')) return;
             input.value += button.textContent;
         });
     }
